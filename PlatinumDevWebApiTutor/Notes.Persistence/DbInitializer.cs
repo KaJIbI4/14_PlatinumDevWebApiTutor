@@ -1,6 +1,4 @@
-﻿using Notes.Persistence;
-
-namespace Notes.Persistence
+﻿namespace Notes.Persistence
 {
     public class DbInitializer
     {
