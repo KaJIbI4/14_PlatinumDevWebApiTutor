@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Notes.Application.Notes.Commands.CreateNote
+namespace Notes.Application.Notes.Commands.UpdateNote
 {
     public class UpdateNoteCommand : IRequest
     {

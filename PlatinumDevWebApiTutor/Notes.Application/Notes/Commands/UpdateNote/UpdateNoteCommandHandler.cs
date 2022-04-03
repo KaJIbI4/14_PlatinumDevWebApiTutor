@@ -7,7 +7,7 @@ using Notes.Application.Common.Exceptions;
 using Notes.Application.Interfaces;
 using Notes.Domain;
 
-namespace Notes.Application.Notes.Commands.CreateNote
+namespace Notes.Application.Notes.Commands.UpdateNote
 {
     public class UpdateNoteCommandHandler : IRequestHandler<UpdateNoteCommand>
     {
