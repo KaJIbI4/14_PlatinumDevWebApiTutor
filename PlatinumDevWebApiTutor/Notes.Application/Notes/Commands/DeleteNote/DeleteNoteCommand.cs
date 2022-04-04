@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Notes.Application.Notes.Commands.DeleteNode
+namespace Notes.Application.Notes.Commands.DeleteNote
 {
     public class DeleteNoteCommand : IRequest
     {
