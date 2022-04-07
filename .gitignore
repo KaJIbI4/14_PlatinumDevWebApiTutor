@@ -349,3 +349,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /PlatinumDevWebApiTutor/Notes.WebApi/*.db
+/PlatinumDevIdentServerTutor/Notes.Identity/*.db
+/PlatinumDevIdentServerTutor/Notes.Identity/tempkey.jwk
