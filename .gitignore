@@ -351,3 +351,5 @@ MigrationBackup/
 /PlatinumDevWebApiTutor/Notes.WebApi/*.db
 /PlatinumDevIdentServerTutor/Notes.Identity/*.db
 /PlatinumDevIdentServerTutor/Notes.Identity/tempkey.jwk
+/PlatinumDevIdentServerTutor/Notes.Identity/*.db-shm
+/PlatinumDevIdentServerTutor/Notes.Identity/*.db-wal
