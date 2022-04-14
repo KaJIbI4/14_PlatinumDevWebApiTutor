@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Notes.Application;
 using Notes.Application.Common.Mappings;
 using Notes.Application.Interfaces;
 using Notes.Persistence;
 using Notes.WebApi.Middleware;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.IO;
 using System.Reflection;
@@ -54,16 +57,14 @@ namespace Notes.WebApi
                     options.Audience = "NotesWebAPI";
                     options.RequireHttpsMetadata = false;
                 });
-            services.AddSwaggerGen( cfg =>
-            {
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                cfg.IncludeXmlComments(xmlPath);
-            });
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen();
+            services.AddApiVersioning();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider descriptionProvider)
         {
             if (env.IsDevelopment())
             {
@@ -72,8 +73,12 @@ namespace Notes.WebApi
             app.UseSwagger();
             app.UseSwaggerUI( cfg =>
             {
-                cfg.RoutePrefix = string.Empty;
-                cfg.SwaggerEndpoint("swagger/v1/swagger.json", "Notes API");
+                foreach (var description in descriptionProvider.ApiVersionDescriptions)
+                {
+                    cfg.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant());
+                    cfg.RoutePrefix = string.Empty;
+                }
             });
             app.UseCustomExceptionHandler();
             app.UseRouting();
@@ -81,6 +86,7 @@ namespace Notes.WebApi
             app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseApiVersioning();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
